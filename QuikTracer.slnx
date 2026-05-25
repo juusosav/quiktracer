@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="QuikTracer.Runtime/QuikTracer.Runtime.csproj" />
+  <Project Path="QuikTracer/QuikTracer.Vsix.csproj">
+    <Deploy />
+  </Project>
+</Solution>
