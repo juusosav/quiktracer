@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualStudio.Shell;
+using QuikTracer.Vsix;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace QuikTracer
+namespace QuikTracer.Vsix
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -26,7 +27,7 @@ namespace QuikTracer
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid(QuikTracerPackage.PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideToolWindow(typeof(QuikTracer.Vsix.QuikTracerWindow))]
+    [ProvideToolWindow(typeof(QuikTracerWindow))]
     public sealed class QuikTracerPackage : AsyncPackage
     {
         /// <summary>
@@ -48,7 +49,7 @@ namespace QuikTracer
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            await QuikTracer.Vsix.QuikTracerWindowCommand.InitializeAsync(this);
+            await QuikTracerWindowCommand.InitializeAsync(this);
         }
 
         #endregion

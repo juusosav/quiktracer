@@ -33,4 +33,7 @@
       <Generator>VsctGenerator</Generator>
     </VSCTCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
 </Project>
