@@ -107,12 +107,12 @@
                                Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
 
                     <TextBlock Text="{Binding SelectedNode.FilePath,
-                                     StringFormat=FilePath: {0}}"
+                                     StringFormat=File Path: {0}}"
                                Margin="0,4"
                                Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
 
                     <TextBlock Text="{Binding SelectedNode.LineNumber,
-                                     StringFormat=LineNumber: {0}}"
+                                     StringFormat=Line Number: {0}}"
                                Margin="0,4"
                                Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
 

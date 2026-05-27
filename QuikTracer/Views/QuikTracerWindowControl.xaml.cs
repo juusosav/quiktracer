@@ -5,6 +5,8 @@ using QuikTracer.Vsix.Models;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace QuikTracer.Vsix
 {
@@ -36,7 +38,7 @@ namespace QuikTracer.Vsix
             {
                 Name = "NullReferenceException",
                 IsError = true,
-                FilePath = @"C:\Projects\QuikTracer.SandboxApp\Components\Weather.razor",
+                FilePath = @"C:\Users\jurox\source\repos\QuikTracer\QuikTracer.SandboxApp\Components\Pages\Weather.razor",
                 LineNumber = 42,
                 Details = "Object reference not set to an instance of an object."
             });
@@ -49,7 +51,9 @@ namespace QuikTracer.Vsix
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event args.</param>
-        private void TraceNode_Click(object sender, RoutedEventArgs e)
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private async void TraceNode_Click(object sender, RoutedEventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
             if (sender is Button button &&
                 button.DataContext is TraceNode node)
@@ -58,6 +62,27 @@ namespace QuikTracer.Vsix
 
                 DataContext = null;
                 DataContext = ViewModel;
+
+                if (!string.IsNullOrWhiteSpace(node.Name) &&
+                    File.Exists(node.FilePath))
+                {
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                    var dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
+
+                    if (dte != null)
+                    {
+                        EnvDTE.Window window = dte.ItemOperations.OpenFile(node.FilePath);
+
+                        window.Visible = true;
+
+                        if (node.LineNumber.HasValue)
+                        {
+                            TextSelection selection = (TextSelection)dte.ActiveDocument.Selection;
+                            selection.GotoLine(node.LineNumber.Value, true);
+                        }
+                    }
+                }
             }
         }
     }
