@@ -58,31 +58,46 @@ namespace QuikTracer.Vsix
             if (sender is Button button &&
                 button.DataContext is TraceNode node)
             {
-                ViewModel.SelectedNode = node;
+                SelectNode(node);
 
-                DataContext = null;
-                DataContext = ViewModel;
+                await OpenSourceAsync(node);
+            }
+        }
 
-                if (!string.IsNullOrWhiteSpace(node.Name) &&
-                    File.Exists(node.FilePath))
+        private void SelectNode(TraceNode node)
+        {
+            ViewModel.SelectedNode = node;
+            DataContext = null;
+            DataContext = ViewModel;
+        }
+
+        private async Task OpenSourceAsync(TraceNode node)
+        {
+            if (!string.IsNullOrWhiteSpace(node.Name) &&
+                File.Exists(node.FilePath))
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
+
+                if (dte != null)
                 {
-                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-                    var dte = ServiceProvider.GlobalProvider.GetService(typeof(DTE)) as DTE2;
-
-                    if (dte != null)
+                    EnvDTE.Window window = dte.ItemOperations.OpenFile(node.FilePath);
+                    window.Visible = true;
+                    if (node.LineNumber.HasValue)
                     {
-                        EnvDTE.Window window = dte.ItemOperations.OpenFile(node.FilePath);
-
-                        window.Visible = true;
-
-                        if (node.LineNumber.HasValue)
-                        {
-                            TextSelection selection = (TextSelection)dte.ActiveDocument.Selection;
-                            selection.GotoLine(node.LineNumber.Value, true);
-                        }
+                        TextSelection selection = (TextSelection)dte.ActiveDocument.Selection;
+                        selection.GotoLine(node.LineNumber.Value, true);
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "No valid source file available for this node.",
+                    "QuickTrace",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
         }
     }
