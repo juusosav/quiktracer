@@ -2,6 +2,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using QuikTracer.Vsix.Models;
+using EnvDTE;
+using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
 
 namespace QuikTracer.Vsix
 {
@@ -32,7 +35,10 @@ namespace QuikTracer.Vsix
             ViewModel.TraceNodes.Add(new TraceNode
             {
                 Name = "NullReferenceException",
-                IsError = true
+                IsError = true,
+                FilePath = @"C:\Projects\QuikTracer.SandboxApp\Components\Weather.razor",
+                LineNumber = 42,
+                Details = "Object reference not set to an instance of an object."
             });
 
             DataContext = ViewModel;
@@ -43,11 +49,16 @@ namespace QuikTracer.Vsix
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event args.</param>
-        private void Button1_Click(object sender, RoutedEventArgs e)
+        private void TraceNode_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
-                "QuikTracerWindow");
+            if (sender is Button button &&
+                button.DataContext is TraceNode node)
+            {
+                ViewModel.SelectedNode = node;
+
+                DataContext = null;
+                DataContext = ViewModel;
+            }
         }
     }
 }

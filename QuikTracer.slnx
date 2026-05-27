@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="QuikTracer.Runtime/QuikTracer.Runtime.csproj" />
+  <Project Path="QuikTracer.SandboxApp/QuikTracer.SandboxApp.csproj" Id="759ab2a0-4689-4f09-86ee-c06e81b11cd4" />
   <Project Path="QuikTracer/QuikTracer.Vsix.csproj">
     <Deploy />
   </Project>

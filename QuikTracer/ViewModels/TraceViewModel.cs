@@ -10,6 +10,7 @@ namespace QuikTracer.Vsix.ViewModels
 {
     public class TraceViewModel
     {
+        public TraceNode? SelectedNode { get; set; }
         public ObservableCollection<TraceNode> TraceNodes { get; set; } = [];
     }
 }

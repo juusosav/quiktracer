@@ -8,65 +8,125 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <ItemsControl ItemsSource="{Binding TraceNodes}">
+        <StackPanel>
 
-            <ItemsControl.ItemTemplate>
+            <!-- TRACE NODES -->
 
-                <DataTemplate>
+            <ItemsControl ItemsSource="{Binding TraceNodes}">
 
-                    <StackPanel Margin="10">
+                <ItemsControl.ItemTemplate>
 
-                        <Border Padding="12"
-                                CornerRadius="6"
-                                BorderThickness="1">
+                    <DataTemplate>
 
-                            <Border.Style>
-                                <Style TargetType="Border">
+                        <StackPanel Margin="10">
 
-                                    <Setter Property="BorderBrush"
-                                            Value="{DynamicResource {x:Static vsshell:VsBrushes.CommandBarBorderKey}}" />
+                            <Button Click="TraceNode_Click"
+                                    Padding="0"
+                                    BorderThickness="0"
+                                    MaxWidth="250"
+                                    Background="Transparent"
+                                    Cursor="Hand">
 
-                                    <Setter Property="Background"
-                                            Value="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}" />
+                                <Border Padding="12"
+                                        CornerRadius="6"
+                                        BorderThickness="1">
 
-                                    <Style.Triggers>
+                                    <Border.Style>
 
-                                        <DataTrigger Binding="{Binding IsError}"
-                                                     Value="True">
+                                        <Style TargetType="Border">
 
                                             <Setter Property="BorderBrush"
-                                                    Value="Red" />
+                                                    Value="{DynamicResource {x:Static vsshell:VsBrushes.CommandBarBorderKey}}" />
 
                                             <Setter Property="Background"
-                                                    Value="#33FF0000" />
+                                                    Value="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}" />
 
-                                        </DataTrigger>
+                                            <Style.Triggers>
 
-                                    </Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsError}"
+                                                             Value="True">
 
-                                </Style>
-                            </Border.Style>
-                            
-                            <TextBlock Text="{Binding Name}"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"/>
+                                                    <Setter Property="BorderBrush"
+                                                            Value="Red" />
 
-                        </Border>
+                                                    <Setter Property="Background"
+                                                            Value="#33FF0000" />
 
-                        <TextBlock Text="↓"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,6,0,0"
-                                   Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"/>
+                                                </DataTrigger>
 
-                    </StackPanel>
+                                            </Style.Triggers>
 
-                </DataTemplate>
+                                        </Style>
 
-            </ItemsControl.ItemTemplate>
+                                    </Border.Style>
 
-        </ItemsControl>
+                                    <TextBlock Text="{Binding Name}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
+
+                                </Border>
+
+                            </Button>
+
+                            <TextBlock Text="↓"
+                                       FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,6,0,0"
+                                       Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
+
+                        </StackPanel>
+
+                    </DataTemplate>
+
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+            <!-- DETAILS PANEL -->
+
+            <Border Margin="10"
+                    Padding="12"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    BorderBrush="{DynamicResource {x:Static vsshell:VsBrushes.CommandBarBorderKey}}"
+                    Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}">
+
+                <StackPanel>
+
+                    <TextBlock Text="Selected Node"
+                               FontWeight="Bold"
+                               FontSize="18"
+                               Margin="0,0,0,10"
+                               Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
+
+                    <TextBlock Text="{Binding SelectedNode.Name,
+                                     StringFormat=Name: {0}}"
+                               FontSize="16"
+                               Margin="0,4"
+                               Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
+
+                    <TextBlock Text="{Binding SelectedNode.FilePath,
+                                     StringFormat=FilePath: {0}}"
+                               Margin="0,4"
+                               Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
+
+                    <TextBlock Text="{Binding SelectedNode.LineNumber,
+                                     StringFormat=LineNumber: {0}}"
+                               Margin="0,4"
+                               Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
+
+                    <TextBlock Text="{Binding SelectedNode.Details,
+                                     StringFormat=Details: {0}}"
+                               TextWrapping="Wrap"
+                               Margin="0,4"
+                               Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}" />
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
 
     </ScrollViewer>
 

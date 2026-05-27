@@ -12,6 +12,7 @@ namespace QuikTracer.Vsix.Models
         public string Name { get; set; } = "";
         public string Type { get; set; } = "";
         public bool IsError { get; set; }
+        public string? Details { get; set; }
         public string? FilePath { get; set; }
         public int? LineNumber { get; set; }
 
